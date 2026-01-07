@@ -6,8 +6,13 @@ import threading
 from utils.collections_ids import collections_ids
 from services.solveprice import robust_price_estimate, to_amounts
 from queue import Queue
+import os
+from dotenv import load_dotenv
 
 message_queue = Queue()
+
+load_dotenv()
+AUTH_TOKEN = os.getenv("Authorization")
 
 # ---------------- CONTROL ----------------
 stop_event = threading.Event()
@@ -15,14 +20,14 @@ stop_event = threading.Event()
 # ---------------- CONFIG ----------------
 URL_SEARCH = "https://portal-market.com/api/nfts/search"
 URL_ACTIONS = "https://portal-market.com/api/market/actions/"
-TIMEOUT = 30
+TIMEOUT = 15
 PRICE_DIFF_MIN = 1
 
 HEADERS_COMMON = {
     "Host": "portal-market.com",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
     "Accept": "application/json, text/plain, */*",
-    "Authorization": "YOUR AUTH TOKEN FROM BURPSUITE",
+    "Authorization": AUTH_TOKEN,
 }
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -57,6 +62,9 @@ def get_price_cached(model_back, collection_id, model_value):
             return None
 
         data = r.json()
+        if len(price_cache) > 1000:
+            price_cache.clear()
+
         price_cache[key] = data
         time.sleep(random.uniform(0.6, 1.2))
         return data
@@ -99,7 +107,6 @@ def process_collection(params: dict):
             return
 
         results = r.json().get("results", [])
-        print(results)
 
         for item in results:
             if stop_event.is_set():
@@ -184,6 +191,7 @@ def start_scanner(all: bool = True, data: dict = None):
                 if stop_event.is_set():
                     break
                 logging.info(f"Коллекция {collection_id}")
+                params["collection_id"] = collection_id
                 process_collection(params)
                 time.sleep(0.2)
         elif not all and data == None:

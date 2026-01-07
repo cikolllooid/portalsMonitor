@@ -1,10 +1,14 @@
 import logging
-
 from aiogram import Bot, Dispatcher
 import asyncio
 from routers import routers
+import os
+from dotenv import load_dotenv
 
-bot = Bot(token="YOUR BOT TOKEN")
+load_dotenv()
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 def setup_logging():

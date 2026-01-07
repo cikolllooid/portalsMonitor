@@ -1,4 +1,5 @@
 import asyncio
+import queue
 import threading
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
@@ -28,7 +29,10 @@ async def message_worker(message: Message):
 
     while True:
         logger.info("waiting queue...")
-        data = await loop.run_in_executor(None, message_queue.get)
+        try:
+            data = await loop.run_in_executor(None, lambda: message_queue.get(timeout=1))
+        except queue.Empty:
+            continue
         logger.info("got from queue: %s", data)
 
         await message.answer(

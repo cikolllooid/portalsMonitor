@@ -7,11 +7,9 @@ from utils.collections_ids import collections_ids
 from services.solveprice import robust_price_estimate, to_amounts
 from queue import Queue
 import os
-from dotenv import load_dotenv
 
 message_queue = Queue()
 
-load_dotenv()
 AUTH_TOKEN = os.getenv("Authorization")
 
 # ---------------- CONTROL ----------------

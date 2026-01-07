@@ -7,6 +7,9 @@ from utils.collections_ids import collections_ids
 from services.solveprice import robust_price_estimate, to_amounts
 from queue import Queue
 import os
+import redis
+
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 message_queue = Queue()
 
@@ -58,6 +61,7 @@ def get_price_cached(model_back, collection_id, model_value):
         if r.status_code != 200:
             logging.warning(f"market/actions error {r.status_code}")
             return None
+
 
         data = r.json()
         if len(price_cache) > 1000:
@@ -114,6 +118,13 @@ def process_collection(params: dict):
             model_back = next((a["value"] for a in item.get("attributes", []) if a["type"] == "backdrop"), None)
             if not model_value or not model_back:
                 continue
+
+            key = f"monitor:{item['id']}"
+
+            if redis_client.get(key) is not None:
+                continue
+
+            redis_client.set(key, 1, ex=172800)
 
             price_data = get_price_cached(model_back, item["collection_id"], model_value)
             if not price_data:

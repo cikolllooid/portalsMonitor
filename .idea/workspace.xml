@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcaefec1-0c2f-4245-ae9a-993fb6953f40" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/routers/monitoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/monitoring.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/monitor_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/monitor_all.py" afterDir="false" />
-    </list>
+    <list default="true" id="bcaefec1-0c2f-4245-ae9a-993fb6953f40" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,7 +96,7 @@
       <workItem from="1767431747157" duration="2289000" />
       <workItem from="1767435711824" duration="18440000" />
       <workItem from="1767514994997" duration="6507000" />
-      <workItem from="1767789792695" duration="1983000" />
+      <workItem from="1767789792695" duration="2482000" />
     </task>
     <servers />
   </component>

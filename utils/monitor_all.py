@@ -13,7 +13,8 @@ redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 message_queue = Queue()
 
-AUTH_TOKEN = os.getenv("Authorization")
+AUTH_TOKEN = os.getenv("AUTH_TOKEN")
+PORTAL_COOKIE = os.getenv("PORTAL_COOKIE")
 
 # ---------------- CONTROL ----------------
 stop_event = threading.Event()
@@ -29,6 +30,7 @@ HEADERS_COMMON = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
     "Accept": "application/json, text/plain, */*",
     "Authorization": AUTH_TOKEN,
+    "Cookie": PORTAL_COOKIE
 }
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
